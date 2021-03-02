@@ -1,4 +1,3 @@
-
 'use strict';
 
 let productsArrayName= [
@@ -106,7 +105,7 @@ function renderNewProduct() {
     Product.all[rightIndex].shown++;
     nextIndexGl.push( leftIndex,midIndex,rightIndex );
   } while ( nextIndexGl.includes( previuosIndex[0] ) || nextIndexGl.includes( previuosIndex[1] ) || nextIndexGl.includes( previuosIndex[2] ) );
-
+  localStorage.setItem( 'Products', JSON.stringify( Product.all ) );
 }
 let button = document.getElementById( 'resultButton' );
 button.style.visibility='hidden';
@@ -163,10 +162,10 @@ function renderBars(){
   let dataValueClicks = [];
   let dataValueShown = [];
 
-  for (let i = 0; i < Product.all.length; i++){
-    nameLables.push(Product.all[i].name);
-    dataValueClicks.push(Product.all[i].clicks);
-    dataValueShown.push(Product.all[i].shown); 
+  for ( let i = 0; i < Product.all.length; i++ ){
+    nameLables.push( Product.all[i].name );
+    dataValueClicks.push( Product.all[i].clicks );
+    dataValueShown.push( Product.all[i].shown );
   }
 
   let ctx = document.getElementById( 'myChart' ).getContext( '2d' );
@@ -289,9 +288,24 @@ function renderBars(){
   } );
 }
 
+
+
 // Helper function
 function randomNumber( min, max ) {
   return Math.floor( Math.random() * ( max - min + 1 ) ) + min;
 }
 
+function getData() {
+  const data = localStorage.getItem( 'Products' );
+
+  if( data ) {
+    const objData = JSON.parse( data );
+    Product.all = objData;
+    renderNewProduct();
+  }
+}
+
+getData();
+
 renderNewProduct();
+
